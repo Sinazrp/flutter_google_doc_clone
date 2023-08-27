@@ -11,7 +11,9 @@ class LoginScreen extends StatelessWidget {
         ),
         body: Center(
           child: ElevatedButton.icon(
-              onPressed: () {}, icon: Icon(Icons.abc_rounded), label: label),
+              onPressed: () {},
+              icon: Icon(Icons.abc_rounded),
+              label: Text('Google Doc')),
         ));
   }
 }
