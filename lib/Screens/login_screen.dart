@@ -7,13 +7,18 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Google Doc'),
+          title: const Text('Google Doc'),
         ),
         body: Center(
           child: ElevatedButton.icon(
-              onPressed: () {},
-              icon: Icon(Icons.abc_rounded),
-              label: Text('Google Doc')),
+            onPressed: () {},
+            icon: Image.asset(
+              'assets/logo/g-logo-2.png',
+              height: 20,
+            ),
+            label: const Text('Sign in with google'),
+            style: ElevatedButton.styleFrom(minimumSize: const Size(150, 50)),
+          ),
         ));
   }
 }
