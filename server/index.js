@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const PORT = process.env.PORT || 3001;
-const DB = "mongodb://root:Wkumle3XWuZSxgfIolzS3Eup@aberama.iran.liara.ir:32074/my-app?authSource=admin";
+const DB = "";
 mongoose.connect(DB).then(() => { console.log("DB Connected"); }).catch((err) => { console.log(err); })
 
 
