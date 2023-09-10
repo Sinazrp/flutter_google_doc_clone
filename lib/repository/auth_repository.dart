@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_google_doc_clone/consts.dart';
 import 'package:flutter_google_doc_clone/model/user_model.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authRepositoryProvider =
     Provider((ref) => AuthRepository(googleSignIn: GoogleSignIn(), dio: Dio()));
+final userProvider = StateProvider<UserModel?>((ref) => null);
 
 class AuthRepository {
   final Dio _dio;
@@ -28,6 +31,11 @@ class AuthRepository {
           '$host/api/signin',
           data: userr.toJson(),
         );
+        switch (res.statusCode) {
+          case 200:
+            final newUser = userr.copyWith(uid: jsonDecode(res.data)['_id']);
+            break;
+        }
       }
     } catch (e) {
       print(e);
