@@ -37,17 +37,11 @@ class AuthRepository {
         },
       );
       switch (res.statusCode) {
-        case 201:
+        case 200:
           print(res.data);
           final newUser = userr.copyWith(uid: res.data["user"]["_id"]);
           print(newUser);
           errorModel = ErrorModel(error: null, data: newUser);
-        case 200:
-          print(res.data);
-          final oldUser = UserModel.fromMap(res.data["user"]);
-          print(oldUser.toString());
-          errorModel = ErrorModel(error: null, data: oldUser);
-
           break;
       }
     }
