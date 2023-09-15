@@ -47,7 +47,7 @@ class UserModel {
       name: map['name'] ?? '',
       email: map['email'] ?? '',
       profilePic: map['profilePic'] ?? '',
-      uid: map['uid'] ?? '',
+      uid: map['_id'] ?? '',
       token: map['token'] ?? '',
     );
   }
