@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_google_doc_clone/Screens/home_screen.dart';
 import 'package:flutter_google_doc_clone/repository/auth_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,8 +7,13 @@ class LoginScreen extends ConsumerWidget {
   const LoginScreen({Key? key}) : super(key: key);
   void singInwithGoogle(WidgetRef ref, BuildContext context) async {
     final sMessenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
     final errorModel = await ref.read(authRepositoryProvider).signIn();
     if (errorModel.error == null) {
+      ref.read(userProvider.notifier).update((state) => errorModel.data);
+      navigator.push(MaterialPageRoute(
+        builder: (context) => const HomeScreen(),
+      ));
     } else {
       sMessenger.showSnackBar(SnackBar(content: Text(errorModel.error!)));
     }
