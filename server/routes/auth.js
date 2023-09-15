@@ -15,14 +15,10 @@ authRouter.post('/api/signup', async (req, res) => {
                 profilePic
             });
             user = await user.save();
-
-            res.status(201).json({ user });
-
         }
-        if (user) {
-            res.status(200).json({ user })
 
-        }
+        const token = jwt.sign({ id: user._id }, "passwordKey")
+        res.status(200).json({ user, token });
     }
     catch (error) {
         res.status(500).json({ error });
@@ -30,4 +26,6 @@ authRouter.post('/api/signup', async (req, res) => {
 
 }
 );
+
+
 module.exports = authRouter;
