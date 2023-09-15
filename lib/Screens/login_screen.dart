@@ -3,6 +3,10 @@ import 'package:flutter_google_doc_clone/Screens/home_screen.dart';
 import 'package:flutter_google_doc_clone/repository/auth_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../model/user_model.dart';
+
+final userProvider = StateProvider<UserModel?>((ref) => null);
+
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({Key? key}) : super(key: key);
   void singInwithGoogle(WidgetRef ref, BuildContext context) async {
@@ -17,6 +21,8 @@ class LoginScreen extends ConsumerWidget {
     } else {
       sMessenger.showSnackBar(SnackBar(content: Text(errorModel.error!)));
     }
+    print('data is ${errorModel.data}');
+    print('error is ${errorModel.error}');
   }
 
   @override
