@@ -61,18 +61,23 @@ class AuthRepository {
     ErrorModel errorModel = ErrorModel(error: 'some Error happens', data: null);
     String? token = await _localStorageRepository.getToken();
 
-    if (token != null) {
-      var res = await _dio.get('https://doc-clone.iran.liara.run/',
-          options: Options(headers: {'x-auth-token': token}));
+    try {
+      if (token != null) {
+        var res = await _dio.get('https://doc-clone.iran.liara.run/',
+            options: Options(headers: {'x-auth-token': token}));
+        print("this is get data ${res.data.toString()}");
 
-      switch (res.statusCode) {
-        case 200:
-          final newUser =
-              UserModel.fromMap(res.data['users']).copyWith(token: token);
-          errorModel = ErrorModel(error: null, data: newUser);
-          _localStorageRepository.setToken(newUser.token);
-          break;
+        switch (res.statusCode) {
+          case 200:
+            final newUser =
+                UserModel.fromMap(res.data["user"]).copyWith(token: token);
+            errorModel = ErrorModel(error: null, data: newUser);
+            _localStorageRepository.setToken(newUser.token);
+            break;
+        }
       }
+    } catch (e) {
+      print(e.toString() + ' this is error from get');
     }
 
     return errorModel;
