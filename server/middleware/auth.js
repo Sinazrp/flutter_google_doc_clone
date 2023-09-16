@@ -12,8 +12,12 @@ const auth = async (req, res, next) => {
         }
         req.userId = verified.id;
         req.token = verified.token;
+        next();
 
     } catch (error) {
-
+        res.status(500).json({ error: error.message })
     }
+
 }
+
+module.exports = auth;
