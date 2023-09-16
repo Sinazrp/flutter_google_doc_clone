@@ -16,7 +16,8 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(actions: [
         IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.logout))
+        IconButton(
+            onPressed: () => signOut(ref), icon: const Icon(Icons.logout))
       ]),
       body: Center(
         child: Text(ref.watch(userProvider)!.email),
