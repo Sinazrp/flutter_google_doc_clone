@@ -82,4 +82,8 @@ class AuthRepository {
 
     return errorModel;
   }
+
+  void logOut() {
+    LocalStorageRepository().setToken('');
+  }
 }
