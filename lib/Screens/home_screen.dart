@@ -31,7 +31,9 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+        IconButton(
+            onPressed: () => createDocument(ref, context),
+            icon: const Icon(Icons.add)),
         IconButton(
             onPressed: () => signOut(ref), icon: const Icon(Icons.logout))
       ]),

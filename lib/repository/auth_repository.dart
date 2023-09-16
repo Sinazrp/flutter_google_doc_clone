@@ -59,6 +59,7 @@ class AuthRepository {
   Future<ErrorModel> getUserData() async {
     ErrorModel errorModel = ErrorModel(error: 'some Error happens', data: null);
     String? token = await _localStorageRepository.getToken();
+    print(token);
 
     try {
       if (token != null) {

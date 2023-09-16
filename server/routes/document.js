@@ -23,7 +23,8 @@ documentRouter.post('/doc/create', auth, async (req, res) => {
         let document = new Document({
             userId: req.userId,
             title: 'Untitled Document',
-            content: createdAt,
+            createdAt: createdAt,
+            content: [],
         });
 
         const newDocument = await document.save();
