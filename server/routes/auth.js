@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../model/user');
 const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 
 const authRouter = express.Router();
 
@@ -26,6 +27,11 @@ authRouter.post('/api/signup', async (req, res) => {
 
 }
 );
+
+authRouter.get("/", auth, async (req, res) => {
+    const user = await User.findById(req.userId);
+    res.status(200).json({ user, token: req.token });
+});
 
 
 module.exports = authRouter;
