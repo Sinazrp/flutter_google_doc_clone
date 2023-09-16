@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_google_doc_clone/Screens/login_screen.dart';
 import 'package:flutter_google_doc_clone/model/error_model.dart';
 import 'package:flutter_google_doc_clone/repository/auth_repository.dart';
-import 'package:flutter_google_doc_clone/repository/local_storage_repo.dart';
 import 'package:flutter_google_doc_clone/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
@@ -27,8 +26,6 @@ class _MyAppState extends ConsumerState<MyApp> {
   }
 
   void getUserData() async {
-    String? token = await LocalStorageRepository().getToken();
-    print(token);
     errorModel = await ref.read(authRepositoryProvider).getUserData();
     if (errorModel != null && errorModel!.data != null) {
       ref.read(userProvider.notifier).update((state) => errorModel!.data);

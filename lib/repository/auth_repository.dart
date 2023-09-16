@@ -26,7 +26,7 @@ class AuthRepository {
     ErrorModel errorModel = ErrorModel(error: 'some Error happens', data: null);
 
     final user = await _googleSignIn.signIn();
-    print(user);
+
     if (user != null) {
       final userr = UserModel(
           name: user.displayName.toString(),
@@ -34,7 +34,6 @@ class AuthRepository {
           profilePic: user.photoUrl ?? 'gffgjkgy',
           uid: '',
           token: '');
-      print(userr);
 
       var res = await _dio.post(
         'https://doc-clone.iran.liara.run/api/signup',
@@ -65,7 +64,6 @@ class AuthRepository {
       if (token != null) {
         var res = await _dio.get('https://doc-clone.iran.liara.run/',
             options: Options(headers: {'x-auth-token': token}));
-        print("this is get data ${res.data.toString()}");
 
         switch (res.statusCode) {
           case 200:
@@ -77,7 +75,7 @@ class AuthRepository {
         }
       }
     } catch (e) {
-      print(e.toString() + ' this is error from get');
+      throw Exception(e);
     }
 
     return errorModel;
