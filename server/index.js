@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const authRouter = require('./routes/auth');
+const documentRouter = require('./routes/document');
 
 const PORT = process.env.PORT || 3001;
 
@@ -14,6 +15,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+
+
+app.use(documentRouter);
 app.use(authRouter);
 
 
