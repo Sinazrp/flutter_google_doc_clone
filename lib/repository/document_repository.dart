@@ -1,8 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_google_doc_clone/repository/local_storage_repo.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../model/document_model.dart';
 import '../model/error_model.dart';
-import '../model/user_model.dart';
+
+final docRepositoryProvider = Provider((ref) => DocumentRepository(
+    localStorageRepository: LocalStorageRepository(), dio: Dio()));
+final docProvider = StateProvider<DocumentModel?>((ref) => null);
 
 class DocumentRepository {
   final Dio _dio;
@@ -19,21 +24,21 @@ class DocumentRepository {
 
     try {
       if (token != null) {
-        var res = await _dio.post('https://doc-clone.iran.liara.run/',
+        var res = await _dio.post('https://doc-clone.iran.liara.run/doc/create',
             options: Options(headers: {'x-auth-token': token}),
             data: {'createdAt': DateTime.now().millisecondsSinceEpoch});
 
         switch (res.statusCode) {
           case 200:
-            final newUser =
-                UserModel.fromMap(res.data["user"]).copyWith(token: token);
-            errorModel = ErrorModel(error: null, data: newUser);
-            _localStorageRepository.setToken(newUser.token);
+            errorModel =
+                ErrorModel(error: null, data: DocumentModel.fromMap(res.data));
+
             break;
         }
       }
     } catch (e) {
       throw Exception(e);
     }
+    return errorModel;
   }
 }
