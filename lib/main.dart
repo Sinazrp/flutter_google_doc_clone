@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_google_doc_clone/Screens/home_screen.dart';
 import 'package:flutter_google_doc_clone/Screens/login_screen.dart';
 import 'package:flutter_google_doc_clone/model/error_model.dart';
 import 'package:flutter_google_doc_clone/repository/auth_repository.dart';
+import 'package:flutter_google_doc_clone/repository/local_storage_repo.dart';
+import 'package:flutter_google_doc_clone/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -24,6 +28,8 @@ class _MyAppState extends ConsumerState<MyApp> {
   }
 
   void getUserData() async {
+    String? token = await LocalStorageRepository().getToken();
+    print(token);
     errorModel = await ref.read(authRepositoryProvider).getUserData();
     if (errorModel != null && errorModel!.data != null) {
       ref.read(userProvider.notifier).update((state) => errorModel!.data);
@@ -32,13 +38,23 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      routerDelegate: RoutemasterDelegate(
+        routesBuilder: (context) {
+          final user = ref.watch(userProvider);
+          if (user != null && user.token.isNotEmpty) {
+            return loggedinRoute;
+          }
+          return loggedoutRoute;
+        },
+      ),
+      routeInformationParser: const RoutemasterParser(),
+      // home: user != null ? const HomeScreen() : const LoginScreen()
     );
   }
 }
