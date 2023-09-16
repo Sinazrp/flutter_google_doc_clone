@@ -39,7 +39,8 @@ class AuthRepository {
       switch (res.statusCode) {
         case 200:
           print(res.data);
-          final newUser = userr.copyWith(uid: res.data["user"]["_id"]);
+          final newUser = userr.copyWith(
+              uid: res.data["user"]["_id"], token: res.data["token"]);
           print(newUser);
           errorModel = ErrorModel(error: null, data: newUser);
           break;
