@@ -43,15 +43,18 @@ class HomeScreen extends ConsumerWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             }
-            return ListView.builder(
-              itemBuilder: (context, index) {
-                DocumentModel document = snapshot.data!.data[index];
-                return Card(
-                  child: Center(child: Text(document.title)),
-                );
-              },
-              itemCount: snapshot.data!.data.length,
-            );
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemBuilder: (context, index) {
+                  DocumentModel document = snapshot.data!.data[index];
+                  return Card(
+                    child: Center(child: Text(document.title)),
+                  );
+                },
+                itemCount: snapshot.data!.data.length,
+              );
+            }
+            return const Text('no data');
           },
           future: ref.watch(docRepositoryProvider).getDoc(),
         ));
