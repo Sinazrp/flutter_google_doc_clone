@@ -8,8 +8,6 @@ documentRouter.get('/doc/me', auth, async (req, res) => {
     try {
         const documents = await Document.find({ userId: req.userId });
         res.json(documents);
-
-        res.json(documents);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
