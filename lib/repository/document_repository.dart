@@ -52,13 +52,15 @@ class DocumentRepository {
           'https://doc-clone.iran.liara.run/doc/me',
           options: Options(headers: {'x-auth-token': token}),
         );
+        print(res.statusCode);
 
         switch (res.statusCode) {
           case 200:
             List<DocumentModel> documents = [];
-            print("length of the map ${res.data.lenght}");
+
             for (var i = 0; i < res.data.length; i++) {
               DocumentModel doc = DocumentModel.fromMap(res.data[i]);
+              print(doc);
               documents.add(doc);
             }
 
