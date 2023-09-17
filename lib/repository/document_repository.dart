@@ -41,4 +41,29 @@ class DocumentRepository {
     }
     return errorModel;
   }
+
+  Future<ErrorModel> getDoc() async {
+    ErrorModel errorModel = ErrorModel(error: 'some Error happens', data: null);
+    String? token = await _localStorageRepository.getToken();
+
+    try {
+      if (token != null) {
+        var res = await _dio.get(
+          'https://doc-clone.iran.liara.run/doc/me',
+          options: Options(headers: {'x-auth-token': token}),
+        );
+
+        switch (res.statusCode) {
+          case 200:
+            errorModel =
+                ErrorModel(error: null, data: DocumentModel.fromMap(res.data));
+
+            break;
+        }
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+    return errorModel;
+  }
 }
