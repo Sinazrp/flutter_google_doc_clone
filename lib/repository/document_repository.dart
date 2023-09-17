@@ -55,8 +55,14 @@ class DocumentRepository {
 
         switch (res.statusCode) {
           case 200:
-            errorModel =
-                ErrorModel(error: null, data: DocumentModel.fromMap(res.data));
+            List<DocumentModel> documents = [];
+            print("length of the map ${res.data.lenght}");
+            for (var i = 0; i < res.data.length; i++) {
+              DocumentModel doc = DocumentModel.fromMap(res.data[i]);
+              documents.add(doc);
+            }
+
+            errorModel = ErrorModel(error: null, data: documents);
 
             break;
         }
