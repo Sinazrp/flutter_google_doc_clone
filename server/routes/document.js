@@ -4,9 +4,11 @@ const Document = require('../model/document');
 const auth = require('../middleware/auth');
 
 // Route to get all documents
-documentRouter.get('/documents', async (req, res) => {
+documentRouter.get('/doc/me', auth, async (req, res) => {
     try {
-        const documents = await Document.find();
+        const documents = await Document.find({ userId: req.userId });
+        res.json(documents);
+
         res.json(documents);
     } catch (err) {
         res.status(500).json({ message: err.message });
