@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_google_doc_clone/model/document_model.dart';
 import 'package:flutter_google_doc_clone/model/error_model.dart';
 import 'package:flutter_google_doc_clone/repository/auth_repository.dart';
 import 'package:flutter_google_doc_clone/repository/document_repository.dart';
@@ -30,16 +31,29 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(actions: [
-        IconButton(
-            onPressed: () => createDocument(ref, context),
-            icon: const Icon(Icons.add)),
-        IconButton(
-            onPressed: () => signOut(ref), icon: const Icon(Icons.logout))
-      ]),
-      body: Center(
-        child: Text(ref.watch(userProvider)!.email),
-      ),
-    );
+        appBar: AppBar(actions: [
+          IconButton(
+              onPressed: () => createDocument(ref, context),
+              icon: const Icon(Icons.add)),
+          IconButton(
+              onPressed: () => signOut(ref), icon: const Icon(Icons.logout))
+        ]),
+        body: FutureBuilder(
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                DocumentModel document = snapshot.data!.data[index];
+                return Card(
+                  child: Center(child: Text(document.title)),
+                );
+              },
+              itemCount: snapshot.data!.data.length,
+            );
+          },
+          future: ref.watch(docRepositoryProvider).getDoc(),
+        ));
   }
 }
