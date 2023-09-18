@@ -48,24 +48,24 @@ class HomeScreen extends ConsumerWidget {
               return const CircularProgressIndicator();
             }
             if (snapshot.hasData) {
-              return InkWell(
-                onTap: () {},
-                child: Center(
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    width: 600,
-                    child: ListView.builder(
-                      itemBuilder: (context, index) {
-                        DocumentModel document = snapshot.data!.data[index];
-                        return SizedBox(
-                          height: 10,
+              return Center(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  width: 600,
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      DocumentModel document = snapshot.data!.data[index];
+                      return InkWell(
+                        onTap: () => navigateDocument(context, document.id),
+                        child: SizedBox(
+                          height: 50,
                           child: Card(
                             child: Center(child: Text(document.title)),
                           ),
-                        );
-                      },
-                      itemCount: snapshot.data!.data.length,
-                    ),
+                        ),
+                      );
+                    },
+                    itemCount: snapshot.data!.data.length,
                   ),
                 ),
               );
