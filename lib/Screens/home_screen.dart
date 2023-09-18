@@ -15,6 +15,10 @@ class HomeScreen extends ConsumerWidget {
     ref.read(userProvider.notifier).update((state) => null);
   }
 
+  void navigateDocument(BuildContext context, String documentId) {
+    Routemaster.of(context).push('/document/$documentId');
+  }
+
   void createDocument(WidgetRef ref, BuildContext context) async {
     final navigator = Routemaster.of(context);
     final snackBar = ScaffoldMessenger.of(context);
