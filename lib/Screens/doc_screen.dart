@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_google_doc_clone/constans.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DocScreen extends ConsumerStatefulWidget {
@@ -23,6 +24,7 @@ class _DocScreenState extends ConsumerState<DocScreen> {
 
   TextEditingController titleController =
       TextEditingController(text: 'untitled documents');
+  QuillController _controller = QuillController.basic();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +85,19 @@ class _DocScreenState extends ConsumerState<DocScreen> {
             )),
       ),
       body: Center(
-        child: Text(widget.id),
+        child: Column(
+          children: [
+            QuillToolbar.basic(controller: _controller),
+            Expanded(
+              child: Container(
+                child: QuillEditor.basic(
+                  controller: _controller,
+                  readOnly: false, // true for view only mode
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
