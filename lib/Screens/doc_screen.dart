@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_google_doc_clone/constans.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DocScreen extends ConsumerStatefulWidget {
@@ -24,7 +24,7 @@ class _DocScreenState extends ConsumerState<DocScreen> {
 
   TextEditingController titleController =
       TextEditingController(text: 'untitled documents');
-  QuillController _controller = QuillController.basic();
+  final quill.QuillController _controller = quill.QuillController.basic();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,12 +87,24 @@ class _DocScreenState extends ConsumerState<DocScreen> {
       body: Center(
         child: Column(
           children: [
-            QuillToolbar.basic(controller: _controller),
+            quill.QuillToolbar.basic(controller: _controller),
+            const SizedBox(
+              height: 5,
+            ),
             Expanded(
-              child: Container(
-                child: QuillEditor.basic(
-                  controller: _controller,
-                  readOnly: false, // true for view only mode
+              child: SizedBox(
+                width: MediaQuery.sizeOf(context).width * 0.95,
+                child: Card(
+                  color: kWhiteColor,
+                  elevation: 5,
+                  surfaceTintColor: kWhiteColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: quill.QuillEditor.basic(
+                      controller: _controller,
+                      readOnly: false, // true for view only mode
+                    ),
+                  ),
                 ),
               ),
             )
