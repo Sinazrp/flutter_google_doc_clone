@@ -80,7 +80,7 @@ class DocumentRepository {
 
     try {
       if (token != null) {
-        var res = await _dio.post('https://doc-clone.iran.liara.run/doc/title',
+        await _dio.post('https://doc-clone.iran.liara.run/doc/title',
             options: Options(headers: {'x-auth-token': token}),
             data: {title, id});
       }
