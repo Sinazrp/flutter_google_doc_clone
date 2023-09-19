@@ -74,4 +74,18 @@ class DocumentRepository {
     }
     return errorModel;
   }
+
+  void updtaeTitle({required String id, required String title}) async {
+    String? token = await _localStorageRepository.getToken();
+
+    try {
+      if (token != null) {
+        var res = await _dio.post('https://doc-clone.iran.liara.run/doc/title',
+            options: Options(headers: {'x-auth-token': token}),
+            data: {title, id});
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }
