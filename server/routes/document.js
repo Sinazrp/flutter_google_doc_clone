@@ -34,7 +34,7 @@ documentRouter.post('/doc/create', auth, async (req, res) => {
     }
 });
 
-documentRouter.post(" /doc/title", auth, async (req, res) => {
+documentRouter.post("/doc/title", auth, async (req, res) => {
     try {
 
         const { id, title } = req.body;

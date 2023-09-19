@@ -3,6 +3,8 @@ import 'package:flutter_google_doc_clone/constans.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../repository/document_repository.dart';
+
 class DocScreen extends ConsumerStatefulWidget {
   final String id;
   const DocScreen({
@@ -20,6 +22,13 @@ class _DocScreenState extends ConsumerState<DocScreen> {
     titleController.dispose();
     // TODO: implement dispose
     super.dispose();
+  }
+
+  void updateTitles(WidgetRef ref, String title) {
+    ref.read(docRepositoryProvider).updtaeTitle(
+          id: widget.id,
+          title: title,
+        );
   }
 
   TextEditingController titleController =
@@ -65,15 +74,17 @@ class _DocScreenState extends ConsumerState<DocScreen> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.5,
             child: TextField(
-              controller: titleController,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                focusedBorder: OutlineInputBorder(),
-                contentPadding: EdgeInsets.only(left: 10),
-              ),
-              onTapOutside: (_) =>
-                  FocusManager.instance.primaryFocus?.unfocus(),
-            ),
+                onSubmitted: (value) => updateTitles(ref, titleController.text),
+                controller: titleController,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  focusedBorder: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.only(left: 10),
+                ),
+                onTapOutside: (_) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  updateTitles(ref, titleController.text);
+                }),
           )
         ]),
         bottom: PreferredSize(
