@@ -37,6 +37,8 @@ class _DocScreenState extends ConsumerState<DocScreen> {
     errorModel = await ref.read(docRepositoryProvider).getDocById(widget.id);
     if (errorModel!.data != null) {
       titleController.text = (errorModel!.data as DocumentModel).title;
+
+      setState(() {});
     }
   }
 
@@ -47,8 +49,7 @@ class _DocScreenState extends ConsumerState<DocScreen> {
         );
   }
 
-  TextEditingController titleController =
-      TextEditingController(text: 'untitled documents');
+  TextEditingController titleController = TextEditingController();
   final quill.QuillController _controller = quill.QuillController.basic();
   @override
   Widget build(BuildContext context) {
