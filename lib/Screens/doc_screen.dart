@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_google_doc_clone/constans.dart';
+import 'package:flutter_google_doc_clone/model/document_model.dart';
+import 'package:flutter_google_doc_clone/model/error_model.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,11 +19,25 @@ class DocScreen extends ConsumerStatefulWidget {
 }
 
 class _DocScreenState extends ConsumerState<DocScreen> {
+  ErrorModel? errorModel;
   @override
   void dispose() {
     titleController.dispose();
-    // TODO: implement dispose
+
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDocumentsData();
+  }
+
+  void fetchDocumentsData() async {
+    errorModel = await ref.read(docRepositoryProvider).getDocById(widget.id);
+    if (errorModel!.data != null) {
+      titleController.text = (errorModel!.data as DocumentModel).title;
+    }
   }
 
   void updateTitles(WidgetRef ref, String title) {
