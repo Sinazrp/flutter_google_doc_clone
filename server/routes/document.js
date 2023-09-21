@@ -47,4 +47,14 @@ documentRouter.post("/doc/title", auth, async (req, res) => {
 
     }
 })
+
+documentRouter.get('/doc/:id', auth, async (req, res) => {
+    try {
+        const documents = await Document.findById(req.params.id);
+        res.json(documents);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 module.exports = documentRouter;
