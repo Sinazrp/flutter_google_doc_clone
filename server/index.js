@@ -31,12 +31,17 @@ app.use(authRouter);
 mongoose.connect(DB).then(() => { console.log("DB Connected"); }).catch((err) => { console.log(err); });
 
 io.on('connection', (socket) => {
-    console.log("Connected" + socket.id);
+    socket.on('join', (data) => {
+        socket.join(data);
+        console.log(`io joind on document ${data}`);
+
+
+    })
 
 })
 
 
-app.listen(PORT, "0.0.0.0", () => {
+server.listen(PORT, "0.0.0.0", () => {
     console.log(`Server is running on port ${PORT}`);
 
 });
