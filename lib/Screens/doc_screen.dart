@@ -34,6 +34,7 @@ class _DocScreenState extends ConsumerState<DocScreen> {
   void initState() {
     super.initState();
     fetchDocumentsData();
+    socketRepsitory.joinRoom(widget.id);
   }
 
   void fetchDocumentsData() async {
