@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_google_doc_clone/constans.dart';
 import 'package:flutter_google_doc_clone/model/document_model.dart';
 import 'package:flutter_google_doc_clone/model/error_model.dart';
+import 'package:flutter_google_doc_clone/repository/socket_repository.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,6 +27,8 @@ class _DocScreenState extends ConsumerState<DocScreen> {
 
     super.dispose();
   }
+
+  SocketRepsitory socketRepsitory = SocketRepsitory();
 
   @override
   void initState() {

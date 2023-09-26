@@ -12,8 +12,11 @@ class LoginScreen extends ConsumerWidget {
   const LoginScreen({Key? key}) : super(key: key);
   void singInwithGoogle(WidgetRef ref, BuildContext context) async {
     final sMessenger = ScaffoldMessenger.of(context);
+
     final navigator = Routemaster.of(context);
+
     final errorModel = await ref.read(authRepositoryProvider).signIn();
+
     if (errorModel.error == null) {
       ref.read(userProvider.notifier).update((state) => errorModel.data);
       navigator.replace('/');
