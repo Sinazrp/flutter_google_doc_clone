@@ -18,7 +18,7 @@ var server = http.createServer(app);
 /* var socket = require('socket.io');
 var io = socket(server); */
 // shorter way
-var socket = require('socket.io')(server);
+var io = require('socket.io')(server);
 
 app.use(cors());
 app.use(express.json());
