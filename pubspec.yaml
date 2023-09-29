@@ -44,7 +44,6 @@ dependencies:
   routemaster: ^1.0.1
   flutter_quill: ^7.4.6
   socket_io_client: ^2.0.3+1
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
