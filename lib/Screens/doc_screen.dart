@@ -21,6 +21,9 @@ class DocScreen extends ConsumerStatefulWidget {
 
 class _DocScreenState extends ConsumerState<DocScreen> {
   ErrorModel? errorModel;
+  quill.QuillController? _controller;
+  TextEditingController titleController = TextEditingController();
+
   @override
   void dispose() {
     titleController.dispose();
@@ -35,15 +38,31 @@ class _DocScreenState extends ConsumerState<DocScreen> {
     super.initState();
     socketRepsitory.joinRoom(widget.id);
     fetchDocumentsData();
+    socketRepsitory.changeListener((data) => _controller?.compose(
+        quill.Delta.fromJson(data['delta']),
+        _controller?.selection ?? const TextSelection.collapsed(offset: 0),
+        quill.ChangeSource.REMOTE));
   }
 
   void fetchDocumentsData() async {
     errorModel = await ref.read(docRepositoryProvider).getDocById(widget.id);
     if (errorModel!.data != null) {
-      titleController.text = (errorModel!.data as DocumentModel).title;
+      DocumentModel doc = errorModel!.data as DocumentModel;
+      titleController.text = doc.title;
+      _controller = quill.QuillController(
+          document: doc.content.isEmpty
+              ? quill.Document()
+              : quill.Document.fromDelta(quill.Delta.fromJson(doc.content)),
+          selection: const TextSelection.collapsed(offset: 0));
 
       setState(() {});
     }
+    _controller!.document.changes.listen((event) {
+      if (event.source == quill.ChangeSource.LOCAL) {
+        Map<String, dynamic> map = {'delta': event.change, 'room': widget.id};
+        socketRepsitory.typing(map);
+      }
+    });
   }
 
   void updateTitles(WidgetRef ref, String title) {
@@ -53,10 +72,13 @@ class _DocScreenState extends ConsumerState<DocScreen> {
         );
   }
 
-  TextEditingController titleController = TextEditingController();
-  final quill.QuillController _controller = quill.QuillController.basic();
   @override
   Widget build(BuildContext context) {
+    if (_controller == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -119,7 +141,7 @@ class _DocScreenState extends ConsumerState<DocScreen> {
       body: Center(
         child: Column(
           children: [
-            quill.QuillToolbar.basic(controller: _controller),
+            quill.QuillToolbar.basic(controller: _controller!),
             const SizedBox(
               height: 5,
             ),
@@ -133,7 +155,7 @@ class _DocScreenState extends ConsumerState<DocScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(30),
                     child: quill.QuillEditor.basic(
-                      controller: _controller,
+                      controller: _controller!,
                       readOnly: false, // true for view only mode
                     ),
                   ),
