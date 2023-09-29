@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
     console.log('a user connected');
     socket.on('join', (documentId) => {
         socket.join(documentId);
-        console.log("io joind on document");
+        console.log("io joind on document : " + documentId);
     });
 });
 
