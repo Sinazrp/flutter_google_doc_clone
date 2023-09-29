@@ -1,1 +1,1 @@
-const host = "https://doc-clone.iran.liara.run";
+const host = "https://doc-clone.iran.liara.run/";
