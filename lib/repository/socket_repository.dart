@@ -13,8 +13,13 @@ class SocketRepsitory {
     _socketClient
         .onDisconnect((data) => print('connection closed for : $documentId'));
     _socketClient.emit('join', documentId);
-    void typing(Map<String, dynamic> data) {
-      _socketClient.emit('typing', data);
-    }
+  }
+
+  void typing(Map<String, dynamic> data) {
+    _socketClient.emit('typing', data);
+  }
+
+  void changeListener(Function(Map<String, dynamic>) func) {
+    _socketClient.on('changes', (data) => func(data));
   }
 }
