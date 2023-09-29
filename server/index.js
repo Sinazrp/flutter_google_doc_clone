@@ -26,6 +26,7 @@ io.on('connection', (socket) => {
         socket.join(documentId);
         console.log("io joind on document : " + documentId);
     });
+    socket.on('typing', (data) => socket.broadcast.to(data.room).emit('changes', data))
 });
 
 
