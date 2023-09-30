@@ -26,7 +26,15 @@ io.on('connection', (socket) => {
         socket.join(documentId);
         console.log("io joind on document : " + documentId);
     });
-    socket.on('typing', (data) => socket.broadcast.to(data.room).emit('changes', data))
+    socket.on('typing', (data) => socket.broadcast.to(data.room).emit('changes', data));
+
+    socket.on('save', (data) => { });
+    const saveData = async (data) => {
+        let document = await Document.findById(data.docId);
+        document.content = data.delta;
+        document = await document.save();
+    }
+
 });
 
 
@@ -41,12 +49,7 @@ app.use(authRouter);
 
 mongoose.connect(DB).then(() => { console.log("DB Connected"); }).catch((err) => { console.log(err); });
 
-/* io.on('connection', (socket) => {
-    socket.on('join', (documentId) => {
-        socket.join(documentId);
-        console.log("io joind on document");
-    });
-}); */
+
 
 
 server.listen(PORT, "0.0.0.0", () => {
