@@ -50,14 +50,19 @@ class _DocScreenState extends ConsumerState<DocScreen> {
       DocumentModel doc = errorModel!.data as DocumentModel;
       titleController.text = doc.title;
       _controller = quill.QuillController(
-          document: doc.content.isEmpty
-              ? quill.Document()
-              : quill.Document.fromDelta(quill.Delta.fromJson(doc.content)),
-          selection: const TextSelection.collapsed(offset: 0));
+        document: doc.content.isEmpty
+            ? quill.Document()
+            : quill.Document.fromDelta(quill.Delta.fromJson(doc.content)),
+        selection: const TextSelection.collapsed(offset: 0),
+      );
 
       setState(() {});
     }
     _controller!.document.changes.listen((event) {
+      print(event.before);
+      print(event.change);
+      print(event.source);
+
       if (event.source == quill.ChangeSource.LOCAL) {
         Map<String, dynamic> map = {'delta': event.change, 'room': widget.id};
         socketRepsitory.typing(map);
