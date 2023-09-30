@@ -22,4 +22,8 @@ class SocketRepsitory {
   void changeListener(Function(Map<String, dynamic>) func) {
     _socketClient.on('changes', (data) => func(data));
   }
+
+  void autoSave(Map<String, dynamic> data) {
+    _socketClient.emit('save', data);
+  }
 }
