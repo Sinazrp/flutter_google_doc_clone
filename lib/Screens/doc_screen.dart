@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_google_doc_clone/constans.dart';
 import 'package:flutter_google_doc_clone/model/document_model.dart';
@@ -38,6 +40,20 @@ class _DocScreenState extends ConsumerState<DocScreen> {
     super.initState();
     socketRepsitory.joinRoom(widget.id);
     fetchDocumentsData();
+    composeController();
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      autoSaving();
+    });
+  }
+
+  void autoSaving() {
+    socketRepsitory.autoSave(<String, dynamic>{
+      'delta': _controller!.document.toDelta(),
+      'docId': widget.id
+    });
+  }
+
+  void composeController() {
     socketRepsitory.changeListener((data) => _controller?.compose(
         quill.Delta.fromJson(data['delta']),
         _controller?.selection ?? const TextSelection.collapsed(offset: 0),
