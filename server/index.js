@@ -28,7 +28,11 @@ io.on('connection', (socket) => {
     });
     socket.on('typing', (data) => socket.broadcast.to(data.room).emit('changes', data));
 
-    socket.on('save', (data) => { });
+    socket.on('save', (data) => {
+        saveData(data);
+        io.to()
+
+    });
     const saveData = async (data) => {
         let document = await Document.findById(data.docId);
         document.content = data.delta;
