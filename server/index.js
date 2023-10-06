@@ -31,7 +31,6 @@ io.on('connection', (socket) => {
 
     socket.on('save', (data) => {
         saveData(data);
-        io.to()
 
     });
     const saveData = async (data) => {
